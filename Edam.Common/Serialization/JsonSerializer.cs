@@ -48,19 +48,19 @@ namespace Edam.Serialization
          ResultsLog<T> results = new ResultsLog<T>();
          if (string.IsNullOrEmpty(jsonText))
          {
-            results.Data = default(T);
+            results.Instance = default(T);
             results.Failed("JSON is null or empty");
             return results;
          }
 
          try
          {
-            results.Data = newton.JsonConvert.DeserializeObject<T>(jsonText);
+            results.Instance = newton.JsonConvert.DeserializeObject<T>(jsonText);
             results.Succeeded();
          }
          catch(Exception ex)
          {
-            results.Data = default(T);
+            results.Instance = default(T);
             results.Failed(ex);
          }
          return results;

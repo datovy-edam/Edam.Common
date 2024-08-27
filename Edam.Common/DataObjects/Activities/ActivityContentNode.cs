@@ -77,7 +77,7 @@ namespace Edam.DataObjects.Activities
             TreeCollection<ActivityContentNode> t =
                new TreeCollection<ActivityContentNode>(l);
 
-            results.Data = t.Root;
+            results.Instance = t.Root;
             results.Succeeded();
          }
          catch (Exception ex)
@@ -95,7 +95,7 @@ namespace Edam.DataObjects.Activities
             var l = ToArray(list);
             TreeCollection<ActivityContentNode> t =
                new TreeCollection<ActivityContentNode>(l);
-            results.Data = t.ToJsonText();
+            results.Instance = t.ToJsonText();
             results.Succeeded();
          }
          catch (Exception ex)

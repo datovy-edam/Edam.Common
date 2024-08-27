@@ -38,10 +38,10 @@ namespace Edam.Diagnostics
 
       #region -- 1.10 Control/Form Members and Properties
 
-      public T Data { get; set; }
+      public T Instance { get; set; }
       public new Object DataObject
       {
-         get { return Data; }
+         get { return Instance; }
       }
 
       #endregion
@@ -50,7 +50,7 @@ namespace Edam.Diagnostics
       public ResultsLog()
       {
          base.InitializeLog();
-         Data = default(T);
+         Instance = default(T);
       }
 
       #endregion

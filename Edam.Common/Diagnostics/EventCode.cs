@@ -15,6 +15,10 @@ namespace Edam.Diagnostics
       MissingOrganizationOri = -2,
       StoredProcedureCallFailed = -3,
       RequestProcessorEmailSendFailed = -4,
+      NotSupported = -5,
+      NotFound = -6,
+      ArgumentOrParameterExpectedNotFound = -7,
+
       ReferenceNotFound = -109,
       ObjectExists = -110,
       HeadersMismatch = -111,

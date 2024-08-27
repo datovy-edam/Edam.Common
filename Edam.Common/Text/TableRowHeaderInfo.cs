@@ -78,14 +78,14 @@ namespace Edam.Text
          if (results.Success)
          {
             int index = 0;
-            foreach (var item in results.Data.Items)
+            foreach (var item in results.Instance.Items)
             {
                item.Index = index;
                item.Validate();
                index++;
             }
          }
-         return results.Success ? results.Data : null;
+         return results.Success ? results.Instance : null;
       }
 
       /// <summary>

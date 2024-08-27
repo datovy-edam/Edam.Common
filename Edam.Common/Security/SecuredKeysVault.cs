@@ -46,7 +46,7 @@ namespace Edam.Security
                throw new SecuredKeysVaultException(
                   "Security::Vault: Can't load keys Vault");
 
-            results.Data = vault;
+            results.Instance = vault;
             results.Succeeded();
          }
          catch (Exception ex)
@@ -69,7 +69,7 @@ namespace Edam.Security
          ResultsLog<ISecuredKeysVault> results = GetVault();
 
          if (results.Success)
-            m_Keys = results.Data.GetSecretKeys();
+            m_Keys = results.Instance.GetSecretKeys();
 
          return results;
       }

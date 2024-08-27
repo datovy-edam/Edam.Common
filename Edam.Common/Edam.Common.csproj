@@ -12,6 +12,9 @@
     <RepositoryUrl>https://github.com/datovy-edam/Edam.Common/tree/master/Edam.Common</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Helper Classes; Common Library</PackageTags>
+    <PackageId>datovy.edam.common</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
