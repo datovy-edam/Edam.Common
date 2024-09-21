@@ -30,6 +30,9 @@ public interface ITreeItem
 
 public class TreeItem : ITreeItem
 {
+   /// <summary>
+   /// Support for list of level indexes to support delimited string of tokens
+   /// </summary>
    public Int16[] Level;
 
    public String? Index { get; set; } = null;
