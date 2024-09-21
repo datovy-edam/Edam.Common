@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Common", "Edam.Common\Edam.Common.csproj", "{810BD9B8-432B-4C0E-816F-AD52232780D7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Net", "C:\prjs\Edam.Libraries\Edam.Common\Edam.Net\Edam.Net.csproj", "{935A9445-9C43-4BDB-87A1-34A834105CA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{810BD9B8-432B-4C0E-816F-AD52232780D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810BD9B8-432B-4C0E-816F-AD52232780D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{810BD9B8-432B-4C0E-816F-AD52232780D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{935A9445-9C43-4BDB-87A1-34A834105CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{935A9445-9C43-4BDB-87A1-34A834105CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{935A9445-9C43-4BDB-87A1-34A834105CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{935A9445-9C43-4BDB-87A1-34A834105CA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
