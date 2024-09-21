@@ -7,5 +7,6 @@ The Common Library contains a small collection of helper classes that are common
 - Diagnostics - various helpers to manage issues, messages while running the service or app.
 - Folder File Support - helpers to quickly get folder and file information.
 - Text Parsing - various text/string parsing support.
+- Web HTTP - helpers to support HTTP requests/responses (see Edam.Net.Web)
 - Other - various other helpers.
 
