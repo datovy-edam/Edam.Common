@@ -207,19 +207,35 @@ namespace Edam.Net.Web
       /// </summary>
       /// <param name="requestUri">request URI (e.g. api/products/1)</param>
       /// <returns>T is returned, null if some issue was found</returns>
-      public T GetDataFromJson<T>(String requestUri)
+      public async Task<T> GetDataFromJsonAsync<T>(String requestUri)
       {
          m_Results.Clear();
          T data = default(T);
          try
          {
-            GetAsync(requestUri).Wait();
+            await GetAsync(requestUri);
             data = GetDataObjectFromJson<T>(Data);
             m_Results.Succeeded();
          }
          catch (Exception ex)
          {
             m_Results.Failed(ex);
+         }
+         return data;
+      }
+
+      /// <summary>
+      /// GET JSON data asynchronously and return the instance of T. 
+      /// </summary>
+      /// <param name="requestUri">request URI (e.g. api/products/1)</param>
+      /// <returns>T is returned, null if some issue was found</returns>
+      public T GetDataFromJson<T>(String requestUri)
+      {
+         T data = default(T);
+         var result = GetDataFromJsonAsync<T>(requestUri);
+         if (result.Status == TaskStatus.RanToCompletion)
+         {
+            data = result.Result;
          }
          return data;
       }
@@ -264,6 +280,86 @@ namespace Edam.Net.Web
       /// POST data asynchronously. 
       /// </summary>
       /// <param name="requestUri">request URI (e.g. api/products)</param>
+      /// <param name="payload">string data to post</param>
+      /// <returns>Task is returned</returns>
+      public async Task<T> PostAsync<T>(String requestUri, string payload)
+      {
+         T response = default(T);
+
+         HttpContent content = GetHttpContent<string>(payload);
+         if (m_ContentType == WebApiContentType.ApplicationJson)
+         {
+            m_Response = await m_Client.PostAsync(requestUri, content);
+            Data = await m_Response.Content.ReadAsStringAsync();
+            response = JsonSerializer.Deserialize<T>(Data);
+         }
+         else
+         if (m_ContentType == WebApiContentType.ApplicationFormUrlEncoded)
+         {
+            HttpRequestMessage req =
+               new HttpRequestMessage(HttpMethod.Post, requestUri);
+            req.Content = new StringContent(payload.ToString(),
+               Encoding.UTF8, "application/x-www-form-urlencoded");
+            //m_Response = await m_Client.SendAsync(req);
+            //Data = await m_Response.Content.ReadAsStringAsync();
+            var task = m_Client.SendAsync(req).ContinueWith((taskAndMessage) =>
+            {
+               m_Response = taskAndMessage.Result;
+               var dataTask = m_Response.Content.ReadAsStringAsync();
+               dataTask.Wait();
+               Data = dataTask.Result;
+            });
+            task.Wait();
+            response = JsonSerializer.Deserialize<T>(Data);
+         }
+
+         return response;
+      }
+
+      /// <summary>
+      /// POST data asynchronously. 
+      /// </summary>
+      /// <param name="requestUri">request URI (e.g. api/products)</param>
+      /// <param name="payload">data to post</param>
+      /// <returns>Task is returned</returns>
+      public async Task<T> PostAsync<T>(String requestUri, T payload)
+      {
+         T response = default(T);
+
+         HttpContent content = GetHttpContent<T>(payload);
+         if (m_ContentType == WebApiContentType.ApplicationJson)
+         {
+            m_Response = await m_Client.PostAsync(requestUri, content);
+            Data = await m_Response.Content.ReadAsStringAsync();
+            response = JsonSerializer.Deserialize<T>(Data);
+         }
+         else
+         if (m_ContentType == WebApiContentType.ApplicationFormUrlEncoded)
+         {
+            HttpRequestMessage req =
+               new HttpRequestMessage(HttpMethod.Post, requestUri);
+            req.Content = new StringContent(payload.ToString(),
+               Encoding.UTF8, "application/x-www-form-urlencoded");
+            //m_Response = await m_Client.SendAsync(req);
+            //Data = await m_Response.Content.ReadAsStringAsync();
+            var task = m_Client.SendAsync(req).ContinueWith((taskAndMessage) =>
+               {
+                  m_Response = taskAndMessage.Result;
+                  var dataTask = m_Response.Content.ReadAsStringAsync();
+                  dataTask.Wait();
+                  Data = dataTask.Result;
+               });
+            task.Wait();
+            response = JsonSerializer.Deserialize<T>(Data);
+         }
+
+         return response;
+      }
+
+      /// <summary>
+      /// POST data asynchronously. 
+      /// </summary>
+      /// <param name="requestUri">request URI (e.g. api/products)</param>
       /// <returns>Task is returned</returns>
       public async Task PostAsync(String requestUri)
       {
@@ -286,40 +382,6 @@ namespace Edam.Net.Web
                dataTask.Wait();
                Data = dataTask.Result;
             });
-            task.Wait();
-         }
-      }
-
-      /// <summary>
-      /// POST data asynchronously. 
-      /// </summary>
-      /// <param name="requestUri">request URI (e.g. api/products)</param>
-      /// <param name="payload">data to post</param>
-      /// <returns>Task is returned</returns>
-      public async Task PostAsync<T>(String requestUri, T payload)
-      {
-         HttpContent content = GetHttpContent<T>(payload);
-         if (m_ContentType == WebApiContentType.ApplicationJson)
-         {
-            m_Response = await m_Client.PostAsync(requestUri, content);
-            Data = await m_Response.Content.ReadAsStringAsync();
-         }
-         else
-         if (m_ContentType == WebApiContentType.ApplicationFormUrlEncoded)
-         {
-            HttpRequestMessage req =
-               new HttpRequestMessage(HttpMethod.Post, requestUri);
-            req.Content = new StringContent(payload.ToString(),
-               Encoding.UTF8, "application/x-www-form-urlencoded");
-            //m_Response = await m_Client.SendAsync(req);
-            //Data = await m_Response.Content.ReadAsStringAsync();
-            var task = m_Client.SendAsync(req).ContinueWith((taskAndMessage) =>
-               {
-                  m_Response = taskAndMessage.Result;
-                  var dataTask = m_Response.Content.ReadAsStringAsync();
-                  dataTask.Wait();
-                  Data = dataTask.Result;
-               });
             task.Wait();
          }
       }
@@ -435,7 +497,21 @@ namespace Edam.Net.Web
       {
          m_Response = await m_Client.DeleteAsync(requestUri);
       }
-      
+
+      /// <summary>
+      /// DELETE data asynchronously. 
+      /// </summary>
+      /// <param name="requestUri">request URI (e.g. api/products/1)</param>
+      /// <param name="payload">data to delete</param>
+      /// <returns>Task is returned</returns>
+      public async Task<T> DeleteAsync<T>(String requestUri)
+      {
+         m_Response = await m_Client.DeleteAsync(requestUri);
+         var itemJson = await m_Response.Content.ReadAsStringAsync();
+         T item = GetDataFromJson<T>(itemJson);
+         return item;
+      }
+
       /// <summary>
       /// Clean up resources...
       /// </summary>

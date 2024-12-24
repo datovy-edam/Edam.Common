@@ -18,6 +18,7 @@ namespace Edam.Diagnostics
       NotSupported = -5,
       NotFound = -6,
       ArgumentOrParameterExpectedNotFound = -7,
+      NameExpectedNoneFound = -8,
 
       ReferenceNotFound = -109,
       ObjectExists = -110,
