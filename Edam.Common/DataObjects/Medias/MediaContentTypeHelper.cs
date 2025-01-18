@@ -28,15 +28,17 @@ namespace Edam.DataObjects.Medias
       public const String ExtJSON = "json";
       public const String ExtExcelOpenXml = "xlsx";
       public const String ExtJSONLD = "jsonld";
+      public const String ExtSQL = "sql";
+      public const String ExtCSV = "csv";
 
       public const String TextFile = "text/plain";
       public const String XmlDocument = "text/xml";
+      public const String JsonDocument = "application/json";
       public const String PNG = "image/png";
       public const String JPEG = "image/jpeg";
       public const String Bitmap = "image/bmp";
       public const String MPEG = "video/mpeg";
       public const String RtfFile = "text/richtext";
-      public const String JsonDocument = "application/json";
       public const String MsWordFile = "application/msword";
       public const String OfficeWordXmlFile = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
       public const String OfficeExcelXmlFile = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -47,6 +49,7 @@ namespace Edam.DataObjects.Medias
       public const String JAVASCRIPT = "text/javascript";
 
       public const String TextFileDescription = "Plain Text File";
+      public const String SqlDocumentDescription = "SQL Text File";
       public const String XmlDocumentDescription = "XML Text File";
       public const String PNGDescription = "PNG Image File";
       public const String JPEGDescription = "JPEG Image File";
@@ -98,6 +101,9 @@ namespace Edam.DataObjects.Medias
                ctype = JsonDocument;
                break;
             case MediaFormat.XML:
+               ctype = XmlDocument;
+               break;
+            case MediaFormat.SQL:
                ctype = XmlDocument;
                break;
             case MediaFormat.MsWordFile:
@@ -284,6 +290,10 @@ namespace Edam.DataObjects.Medias
             f = MediaFormat.JSON;
          else if (ext == ExtExcelOpenXml)
             f = MediaFormat.OfficeExcelXml;
+         else if (ext == ExtSQL)
+            f = MediaFormat.TextFile;
+         else if (ext == ExtCSV)
+            f = MediaFormat.TextFile;
          return f;
       }
 

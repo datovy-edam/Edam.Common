@@ -25,6 +25,7 @@ namespace Edam.DataObjects.Medias
       XML = 11,
       XSLT = 14,
       JSON = 16,
+      SQL = 18,
 
       JPEG2000 = 20,
       WSQ = 21,
