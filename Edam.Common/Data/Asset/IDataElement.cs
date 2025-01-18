@@ -91,6 +91,7 @@ namespace Edam.Data.Asset
       int? Precision { get; set; }
       int? Scale { get; set; }
 
-      //AssetDataElement DeepCopy();
+      T DeepCopy<T>();
    }
+
 }
