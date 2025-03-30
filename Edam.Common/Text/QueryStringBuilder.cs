@@ -67,6 +67,12 @@ namespace Edam.Text
          m_Count++;
       }
 
+      public void Add(string key, int? value)
+      {
+         Add(key, (value.HasValue ? value.Value.ToString() :
+            String.Empty));
+      }
+
       public override String ToString()
       {
          return m_Builder.ToString();

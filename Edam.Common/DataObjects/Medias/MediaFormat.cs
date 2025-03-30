@@ -26,12 +26,14 @@ namespace Edam.DataObjects.Medias
       XSLT = 14,
       JSON = 16,
       SQL = 18,
+      Markdown = 19,
+      Yaml = 20,
 
-      JPEG2000 = 20,
-      WSQ = 21,
-      Bitmap = 22,
-      VectorDatav = 23,
-      FaxGroup4Standard = 24
+      JPEG2000 = 50,
+      WSQ = 51,
+      Bitmap = 52,
+      VectorDatav = 53,
+      FaxGroup4Standard = 54
    }
 
 }

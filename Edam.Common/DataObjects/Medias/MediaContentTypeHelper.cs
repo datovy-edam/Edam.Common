@@ -23,6 +23,7 @@ namespace Edam.DataObjects.Medias
       public const String ExtDOC = "doc";
       public const String ExtRTF = "rtf";
       public const String ExtTXT = "txt";
+      public const String ExtTEXT = "text";
       public const String ExtXML = "xml";
       public const String ExtXSD = "xsd";
       public const String ExtJSON = "json";
@@ -30,6 +31,9 @@ namespace Edam.DataObjects.Medias
       public const String ExtJSONLD = "jsonld";
       public const String ExtSQL = "sql";
       public const String ExtCSV = "csv";
+      public const String ExtYml = "yml";
+      public const String ExtYaml = "yaml";
+      public const String ExtMarkdown = "md";
 
       public const String TextFile = "text/plain";
       public const String XmlDocument = "text/xml";
@@ -48,6 +52,11 @@ namespace Edam.DataObjects.Medias
       public const String JSONLD = "application/ld+json";
       public const String JAVASCRIPT = "text/javascript";
 
+      public const String Yaml = "text/yaml";
+      public const String TextMarkdown = "text/markdown";
+
+      public const String TextMarkdownDescription = "Markdown File";
+      public const String TextYamlDescription = "YAML File";
       public const String TextFileDescription = "Plain Text File";
       public const String SqlDocumentDescription = "SQL Text File";
       public const String XmlDocumentDescription = "XML Text File";
@@ -76,6 +85,12 @@ namespace Edam.DataObjects.Medias
          String ctype = String.Empty;
          switch (format)
          {
+            case MediaFormat.Yaml:
+               ctype = Yaml;
+               break;
+            case MediaFormat.Markdown:
+               ctype = TextMarkdown;
+               break;
             case MediaFormat.TextFile:
                ctype = TextFile;
                break;
@@ -139,6 +154,12 @@ namespace Edam.DataObjects.Medias
          String ctype = String.Empty;
          switch (format)
          {
+            case MediaFormat.Yaml:
+               ctype = TextYamlDescription;
+               break;
+            case MediaFormat.Markdown:
+               ctype = TextMarkdownDescription;
+               break;
             case MediaFormat.TextFile:
                ctype = TextFileDescription;
                break;
@@ -189,6 +210,10 @@ namespace Edam.DataObjects.Medias
       {
          MediaFormat f = MediaFormat.Unknown;
 
+         if (contentType == Yaml)
+            return MediaFormat.Yaml;
+         if (contentType == TextMarkdown)
+            return MediaFormat.Markdown;
          if (contentType == TextFile)
             return MediaFormat.TextFile;
          if (contentType == XmlDocument)
@@ -228,6 +253,12 @@ namespace Edam.DataObjects.Medias
 
          switch (format)
          {
+            case MediaFormat.Yaml:
+               c = MediaContentType.text_yaml;
+               break;
+            case MediaFormat.Markdown:
+               c = MediaContentType.text_markdown;
+               break;
             case MediaFormat.JPEG:
                c = MediaContentType.image_jpeg;
                break;
@@ -274,6 +305,12 @@ namespace Edam.DataObjects.Medias
          MediaFormat f = MediaFormat.Unknown;
          if (ext == ExtDOC)
             f = MediaFormat.MsWordFile;
+         else if (ext == ExtMarkdown)
+            f = MediaFormat.Markdown;
+         else if (ext == ExtYaml)
+            f = MediaFormat.Yaml;
+         else if (ext == ExtYml)
+            f = MediaFormat.Yaml;
          else if (ext == ExtDOCX)
             f = MediaFormat.OfficeWordXml;
          else if (ext == ExtJPEG)
@@ -294,6 +331,8 @@ namespace Edam.DataObjects.Medias
             f = MediaFormat.TextFile;
          else if (ext == ExtCSV)
             f = MediaFormat.TextFile;
+         else if (ext == ExtTXT || ext == ExtTEXT)
+            f = MediaFormat.TextFile;
          return f;
       }
 
@@ -312,6 +351,12 @@ namespace Edam.DataObjects.Medias
          String ext;
          switch(contentType)
          {
+            case MediaFormat.Yaml:
+               ext = ExtYml;
+               break;
+            case MediaFormat.Markdown:
+               ext = ExtMarkdown;
+               break;
             case MediaFormat.PdfFile:
                ext = ExtPDF;
                break;
