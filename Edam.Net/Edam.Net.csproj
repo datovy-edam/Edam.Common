@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Edam.Common">
       <HintPath>..\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
     </Reference>
