@@ -22,6 +22,8 @@ namespace Edam.DataObjects.Medias
       text_xml = 11,
       image_png = 6,
       application_json = 16,
+      text_yaml = 17,
+      text_markdown = 18,
 
       image_jpeg2000 = 200,
       image_wsq = 210,
