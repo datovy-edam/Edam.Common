@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Net", "C:\prjs\Edam.Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Common", "C:\prjs\Edam.Libraries\Edam.Common\Edam.Common\Edam.Common.csproj", "{8A0D0F2E-8101-4756-A11C-A375075E5B8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Test.NetHtml.Support", "Testing\Edam.Test.NetHtml.Support\Edam.Test.NetHtml.Support.csproj", "{64872D8F-937B-402B-BEB5-7CCB14F263BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{8A0D0F2E-8101-4756-A11C-A375075E5B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A0D0F2E-8101-4756-A11C-A375075E5B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A0D0F2E-8101-4756-A11C-A375075E5B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64872D8F-937B-402B-BEB5-7CCB14F263BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64872D8F-937B-402B-BEB5-7CCB14F263BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64872D8F-937B-402B-BEB5-7CCB14F263BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64872D8F-937B-402B-BEB5-7CCB14F263BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{64872D8F-937B-402B-BEB5-7CCB14F263BB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1A20F8D-17E9-425F-A3FA-EA77DD3FA9A2}
