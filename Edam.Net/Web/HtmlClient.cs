@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Xml.Linq;
+using System.Dynamic;
 
 // -----------------------------------------------------------------------------
 
@@ -45,6 +46,148 @@ public class HtmlClient
          {
             results.Failed(e.Message);
          }
+      }
+      return results;
+   }
+
+   /// <summary>
+   /// Scrap Attributes
+   /// </summary>
+   /// <param name="node">node whose attributes will be scrapped</param>
+   /// <param name="cell">cell info to store attributes into</param>
+   public static void ScrapAttributes(
+      HtmlNode node, HtmlCellInfo cell)
+   {
+      string title = String.Empty;
+      string link = String.Empty;
+      foreach (var n in node.Attributes)
+      {
+         if (n.Name == "title")
+         {
+            title = n.Value;
+         }
+         else if (n.Name == "href")
+         {
+            link = n.Value;
+         }
+      }
+
+      if (!String.IsNullOrWhiteSpace(link))
+      {
+         cell.Link = link;
+         cell.Description = title;
+         cell.AttributeCount += 2;
+      }
+      else
+      {
+         cell.Title = title;
+         cell.AttributeCount++;
+      }
+   }
+
+   /// <summary>
+   /// Scrap Link.
+   /// </summary>
+   /// <param name="node">node whose child nodes will be scrapped</param>
+   /// <param name="cell">cell info to store attributes into</param>
+   public static void ScrapLink(
+      HtmlNode node, HtmlCellInfo cell)
+   {
+      if (node.InnerHtml.StartsWith("<a "))
+      {
+         foreach(var c in node.ChildNodes)
+         {
+            if (c.HasAttributes)
+            {
+               ScrapAttributes(c, cell);
+            }
+         }
+      }
+      else
+      {
+         ScrapAttributes(node, cell);
+      }
+   }
+
+   /// <summary>
+   /// Get HTML Async and optional id of a section within...
+   /// </summary>
+   /// <param name="url">URL to get</param>
+   /// <param name="id">id of section to extract</param>
+   /// <returns>Extracted HTML is returned</returns>
+   public static async Task<ResultsLog<HtmlTableInfo>> GetHtmlTableAsync(
+      string url, string id = null)
+   {
+      ResultsLog<HtmlTableInfo> results = new ResultsLog<HtmlTableInfo>();
+      results.Instance = new HtmlTableInfo();
+      HtmlTableInfo tinfo = results.Instance;
+
+      var web = new HtmlWeb();
+      var doc = await web.LoadFromWebAsync(url);
+
+      // Select the first table
+      var table = doc.DocumentNode.SelectSingleNode("//table");
+      if (table != null)
+      {
+         var rows = table.SelectNodes(".//tr");
+         foreach (var row in rows)
+         {
+            var cells = row.SelectNodes(".//td");
+            if (cells != null)
+            {
+               int cnt = 0;
+               var itms = new List<HtmlCellInfo>();
+               foreach (var cell in cells)
+               {
+                  var cellInfo = new HtmlCellInfo();
+
+                  // check inner cell, it is a Text cell?
+                  if (cell.InnerText != String.Empty)
+                  {
+                     if (String.IsNullOrWhiteSpace(cell.InnerHtml))
+                        continue;
+
+                     ScrapLink(cell, cellInfo);
+                     cellInfo.Text = cell.InnerText.Trim();
+                     cellInfo.AttributeCount++;
+                     itms.Add(cellInfo);
+                  }
+                  else
+                  {
+
+                  }
+                  cnt++;
+               }
+               if (itms.Count > 0)
+                  tinfo.AddRow(itms);
+            }
+            else
+            {
+               // assume that first line is <th> with header info
+               tinfo.SetHeader(row.InnerText);
+            }
+         }
+      }
+      else
+      {
+         Console.WriteLine("No table found.");
+      }
+      return results;
+   }
+
+   /// <summary>
+   /// Get HTML and optional id of a section within...
+   /// </summary>
+   /// <param name="url">URL to get</param>
+   /// <returns>Extracted HTML is returned</returns>
+   public static ResultsLog<HtmlTableInfo> GetHtmlTable(string url)
+   {
+      ResultsLog<HtmlTableInfo> results = null;
+      var tinfo = GetHtmlTableAsync(url);
+      tinfo.Wait();
+      if (tinfo.Status == TaskStatus.RanToCompletion)
+      {
+         results = tinfo.Result;
       }
       return results;
    }
