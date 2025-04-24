@@ -79,51 +79,78 @@ public class HtmlTableInfo
    }
 
    /// <summary>
+   /// Cell to JSON.
+   /// </summary>
+   /// <param name="builder">builder</param>
+   /// <param name="cell">cell to process</param>
+   /// <returns></returns>
+   private StringBuilder CellToJson(StringBuilder builder, HtmlCellInfo cell)
+   {
+      if (cell.OrtinalNo != 0)
+         builder.AppendLine(",");
+
+      var header = _header[cell.OrtinalNo];
+      if (!String.IsNullOrWhiteSpace(cell.Title))
+      {
+         builder.AppendLine(PrepareJson(Map(nameof(cell.Title)), cell.Title, true));
+      }
+      if (!String.IsNullOrWhiteSpace(cell.Link))
+      {
+         builder.AppendLine(PrepareJson(Map(nameof(cell.Link)), cell.Link, true));
+      }
+      if (!String.IsNullOrWhiteSpace(cell.Description))
+      {
+         builder.AppendLine(PrepareJson(
+            Map(nameof(cell.Description)), cell.Description, true));
+      }
+
+      builder.Append(PrepareJson(Map(header), cell.Text));
+
+      return builder;
+   }
+
+   /// <summary>
    /// Prepare JSON document representing this table.
    /// </summary>
+   /// <param name="evaluateRow">function to evaluate row that returns true or false</param>
    /// <returns>JSON Text</returns>
-   public string ToJsonDocument()
+   public string ToJsonDocument(Func<List<HtmlCellInfo>,bool> evaluateRow = null)
    {
       StringBuilder sb = new StringBuilder();
       int cnt = 0;
       sb.AppendLine("[");
       foreach (var row in Rows)
       {
-         var indx = 0;
-         if (cnt != 0)
-            sb.AppendLine(",");
-         sb.AppendLine("   {");
+
+         // prepare row cells JSON
+         StringBuilder? cellBuilder = new StringBuilder();
+         var cellIndex = 0;
          foreach (var cell in row)
          {
-
-            // there must be more than 1 attribute
-            if (cell.AttributeCount <= 1)
-               continue;
-
-            if (indx != 0)
-               sb.AppendLine(",");
-
-            var header = _header[indx];
-            if (!String.IsNullOrWhiteSpace(cell.Title))
-            {
-               sb.AppendLine(PrepareJson(Map(nameof(cell.Title)), cell.Title, true));
-            }
-            if (!String.IsNullOrWhiteSpace(cell.Link))
-            {
-               sb.AppendLine(PrepareJson(Map(nameof(cell.Link)), cell.Link, true));
-            }
-            if (!String.IsNullOrWhiteSpace(cell.Description))
-            {
-               sb.AppendLine(PrepareJson(Map(nameof(cell.Description)), cell.Description, true));
-            }
-
-            sb.Append(PrepareJson(Map(header), cell.Text));
-            indx++;
+            CellToJson(cellBuilder, cell);
+            cellIndex++;
          }
-         sb.AppendLine(String.Empty);
-         sb.Append("   }");
-         cnt++;
+
+         if (cellIndex > 1 && cellBuilder != null)
+         {
+            var include = true;
+            if (evaluateRow != null)
+            {
+               include = evaluateRow(row);
+            }
+            if (include)
+            {
+               if (cnt != 0)
+                  sb.AppendLine(",");
+               sb.AppendLine("   {");
+               sb.Append(cellBuilder);
+               sb.AppendLine(String.Empty);
+               sb.Append("   }");
+               cnt++;
+            }
+         }
       }
+
       sb.AppendLine(String.Empty);
       sb.AppendLine("]");
       return sb.ToString();

@@ -8,7 +8,7 @@ namespace Edam.Net.Web;
 
 public class HtmlCellInfo
 {
-   public int AttributeCount = 0;
+   public int OrtinalNo { get; set; } = 0;
    public string Title { get; set; }
    public string Text { get; set; }
    public string Description { get; set; }

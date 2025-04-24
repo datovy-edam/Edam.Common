@@ -76,12 +76,10 @@ public class HtmlClient
       {
          cell.Link = link;
          cell.Description = title;
-         cell.AttributeCount += 2;
       }
       else
       {
          cell.Title = title;
-         cell.AttributeCount++;
       }
    }
 
@@ -136,10 +134,11 @@ public class HtmlClient
             if (cells != null)
             {
                int cnt = 0;
-               var itms = new List<HtmlCellInfo>();
+               var items = new List<HtmlCellInfo>();
                foreach (var cell in cells)
                {
                   var cellInfo = new HtmlCellInfo();
+                  cellInfo.OrtinalNo = cnt;
 
                   // check inner cell, it is a Text cell?
                   if (cell.InnerText != String.Empty)
@@ -149,8 +148,7 @@ public class HtmlClient
 
                      ScrapLink(cell, cellInfo);
                      cellInfo.Text = cell.InnerText.Trim();
-                     cellInfo.AttributeCount++;
-                     itms.Add(cellInfo);
+                     items.Add(cellInfo);
                   }
                   else
                   {
@@ -158,8 +156,8 @@ public class HtmlClient
                   }
                   cnt++;
                }
-               if (itms.Count > 0)
-                  tinfo.AddRow(itms);
+               if (items.Count > 0)
+                  tinfo.AddRow(items);
             }
             else
             {
